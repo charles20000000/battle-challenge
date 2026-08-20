@@ -1,5 +1,13 @@
-const challenges = {
+/* =========================================================
+   BATTLE CHALLENGE V2
+   Viral Challenge System
+   ========================================================= */
 
+/* =========================
+   CHALLENGES
+========================= */
+
+const challenges = {
   fun: [
     {
       title: "NE RIGOLE PAS 😂",
@@ -119,6 +127,11 @@ const challenges = {
   ]
 };
 
+
+/* =========================
+   DAILY CHALLENGES
+========================= */
+
 const dailyChallenges = [
   {
     title: "Le défi impossible",
@@ -142,43 +155,107 @@ const dailyChallenges = [
   }
 ];
 
+
+/* =========================
+   PLAYER
+========================= */
+
 let state = {
   xp: Number(localStorage.getItem("bc_xp") || 0),
   wins: Number(localStorage.getItem("bc_wins") || 0),
   battles: Number(localStorage.getItem("bc_battles") || 0),
   streak: Number(localStorage.getItem("bc_streak") || 0),
   best: Number(localStorage.getItem("bc_best") || 0),
+
+  playerName:
+    localStorage.getItem("bc_name") ||
+    "Challenger",
+
   playerScore: 0,
   opponentScore: 0,
+
   currentChallenge: 0,
   currentMode: "fun",
   currentChallenges: [],
-  lastBattle: null
+
+  lastBattle: null,
+
+  challengeMode: false,
+  challengeId: null,
+  challengeCreator: null,
+  challengeCreatorScore: null
 };
 
 let timerInterval = null;
 
+
+/* =========================
+   HELPERS
+========================= */
+
 const $ = id => document.getElementById(id);
-// ================================
-// ANALYTICS BATTLE CHALLENGE
-// ================================
+
+
+/* =========================
+   ANALYTICS
+========================= */
 
 function trackEvent(name, params = {}) {
   if (typeof gtag === "function") {
     gtag("event", name, params);
   }
 }
+
+
+/* =========================
+   SAVE
+========================= */
+
 function save() {
   localStorage.setItem("bc_xp", state.xp);
   localStorage.setItem("bc_wins", state.wins);
   localStorage.setItem("bc_battles", state.battles);
   localStorage.setItem("bc_streak", state.streak);
   localStorage.setItem("bc_best", state.best);
+  localStorage.setItem("bc_name", state.playerName);
 }
+
+
+/* =========================
+   LEVEL SYSTEM
+========================= */
 
 function getLevel() {
   return Math.floor(state.xp / 250) + 1;
 }
+
+function getLevelProgress() {
+  return state.xp % 250;
+}
+
+
+/* =========================
+   BADGES
+========================= */
+
+function getBadges() {
+  const badges = [];
+
+  if (state.wins >= 1) badges.push("🏆 Première victoire");
+  if (state.wins >= 5) badges.push("⚔️ Challenger");
+  if (state.wins >= 10) badges.push("🔥 Sérieux joueur");
+  if (state.streak >= 7) badges.push("🔥 Streak 7 jours");
+  if (state.streak >= 30) badges.push("👑 Légende");
+  if (state.xp >= 1000) badges.push("⭐ 1000 XP");
+  if (state.battles >= 50) badges.push("💀 Machine à battles");
+
+  return badges;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 function goHome() {
   showScreen("home");
@@ -186,11 +263,15 @@ function goHome() {
 }
 
 function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => {
-    s.classList.remove("active");
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
   });
 
-  $(id).classList.add("active");
+  const target = $(id);
+
+  if (target) {
+    target.classList.add("active");
+  }
 
   window.scrollTo({
     top: 0,
@@ -198,11 +279,18 @@ function showScreen(id) {
   });
 }
 
-function updateUI() {
 
+/* =========================
+   UI
+========================= */
+
+function updateUI() {
   const level = getLevel();
+  const currentLevelXP = getLevelProgress();
+  const percentage = (currentLevelXP / 250) * 100;
 
   $("levelBadge").textContent = level;
+
   $("homeXP").textContent = state.xp;
   $("homeWins").textContent = state.wins;
   $("homeStreak").textContent = state.streak;
@@ -214,9 +302,6 @@ function updateUI() {
   $("profileBattles").textContent = state.battles;
   $("profileBest").textContent = state.best;
 
-  const currentLevelXP = state.xp % 250;
-  const percentage = (currentLevelXP / 250) * 100;
-
   $("profileXPBar").style.width = percentage + "%";
 
   $("levelText").textContent =
@@ -225,26 +310,40 @@ function updateUI() {
   updateDaily();
 }
 
-function updateDaily() {
 
+/* =========================
+   DAILY
+========================= */
+
+function getDailyChallenge() {
   const day = Math.floor(Date.now() / 86400000);
-  const daily = dailyChallenges[day % dailyChallenges.length];
+
+  return dailyChallenges[
+    day % dailyChallenges.length
+  ];
+}
+
+function updateDaily() {
+  const daily = getDailyChallenge();
 
   $("dailyTitle").textContent = daily.title;
   $("dailyDescription").textContent = daily.text;
 }
 
 function startDaily() {
+  state.challengeMode = false;
 
   state.currentMode = "chaos";
+
   trackEvent("daily_challenge_started");
-  state.currentChallenges = [
-    {
-      title: dailyChallenges[Math.floor(Date.now() / 86400000) % dailyChallenges.length].title,
-      text: dailyChallenges[Math.floor(Date.now() / 86400000) % dailyChallenges.length].text,
-      category: "BATTLE DU JOUR"
-    }
-  ];
+
+  const daily = getDailyChallenge();
+
+  state.currentChallenges = [{
+    title: daily.title,
+    text: daily.text,
+    category: "BATTLE DU JOUR"
+  }];
 
   state.currentChallenge = 0;
   state.playerScore = 0;
@@ -253,29 +352,52 @@ function startDaily() {
   showScreen("battle");
   loadChallenge();
 }
+
+
+/* =========================
+   START BATTLE
+========================= */
 
 function startBattle(mode) {
 
   if (!mode) {
     const modes = ["fun", "quiz", "speed", "chaos"];
-    mode = modes[Math.floor(Math.random() * modes.length)];
+
+    mode =
+      modes[Math.floor(Math.random() * modes.length)];
   }
 
+  state.challengeMode = false;
+  state.challengeId = null;
+
   state.currentMode = mode;
-trackEvent("battle_started", {
-  mode: mode
-});
-  state.currentChallenges = [...challenges[mode]]
-    .sort(() => Math.random() - .5)
-    .slice(0, 5);
+
+  trackEvent("battle_started", {
+    mode
+  });
+
+  state.currentChallenges =
+    [...challenges[mode]]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5);
 
   state.currentChallenge = 0;
   state.playerScore = 0;
   state.opponentScore = 0;
 
+  if ($("opponentName")) {
+    $("opponentName").textContent = "ADVERSAIRE";
+  }
+
   showScreen("battle");
+
   loadChallenge();
 }
+
+
+/* =========================
+   LOAD CHALLENGE
+========================= */
 
 function loadChallenge() {
 
@@ -304,22 +426,36 @@ function loadChallenge() {
   $("challengeText").textContent =
     challenge.text;
 
-  $("challengeButton").textContent =
-    challenge.timer ? "⚡ COMMENCER" : "J'AI RELEVÉ LE DÉFI";
+  $("challengeButton").disabled = false;
 
-  $("challengeButton").onclick = doChallenge;
+  $("challengeButton").textContent =
+    challenge.timer
+      ? "⚡ COMMENCER"
+      : "J'AI RELEVÉ LE DÉFI";
+
+  $("challengeButton").onclick =
+    doChallenge;
 
   $("timer").classList.add("hidden");
 
   const progress =
-    ((state.currentChallenge) /
-    state.currentChallenges.length) * 100;
+    (state.currentChallenge /
+      state.currentChallenges.length) * 100;
 
-  $("progressBar").style.width = progress + "%";
+  $("progressBar").style.width =
+    progress + "%";
 
-  $("playerScore").textContent = state.playerScore;
-  $("opponentScore").textContent = state.opponentScore;
+  $("playerScore").textContent =
+    state.playerScore;
+
+  $("opponentScore").textContent =
+    state.opponentScore;
 }
+
+
+/* =========================
+   DO CHALLENGE
+========================= */
 
 function doChallenge() {
 
@@ -331,63 +467,100 @@ function doChallenge() {
     return;
   }
 
-  const playerWins = Math.random() > 0.4;
+  const playerWins =
+    Math.random() > 0.4;
 
   if (playerWins) {
+
     state.playerScore++;
+
     showToast("🔥 Tu marques le point !");
+
   } else {
+
     state.opponentScore++;
+
     showToast("💀 Ton adversaire marque !");
   }
 
   nextChallenge();
 }
 
+
+/* =========================
+   SPEED CHALLENGE
+========================= */
+
 function startSpeedChallenge() {
 
-  const button = $("challengeButton");
-  const timer = $("timer");
+  const button =
+    $("challengeButton");
+
+  const timer =
+    $("timer");
 
   button.disabled = true;
-  button.textContent = "ATTENDS...";
+
+  button.textContent =
+    "ATTENDS...";
 
   timer.classList.remove("hidden");
 
   let seconds = 3;
-  timer.textContent = seconds;
 
-  timerInterval = setInterval(() => {
+  timer.textContent =
+    seconds;
 
-    seconds--;
+  timerInterval =
+    setInterval(() => {
 
-    timer.textContent = seconds;
+      seconds--;
 
-    if (seconds <= 0) {
+      timer.textContent =
+        seconds;
 
-      clearInterval(timerInterval);
+      if (seconds <= 0) {
 
-      timer.textContent = "⚡";
+        clearInterval(timerInterval);
 
-      button.disabled = false;
-      button.textContent = "TOUCHE !";
+        timer.textContent =
+          "⚡";
 
-      button.onclick = () => {
+        button.disabled = false;
 
-        if (Math.random() > .35) {
-          state.playerScore++;
-          showToast("⚡ RÉACTION PARFAITE !");
-        } else {
-          state.opponentScore++;
-          showToast("😭 Trop lent !");
-        }
+        button.textContent =
+          "TOUCHE !";
 
-        nextChallenge();
-      };
-    }
+        button.onclick = () => {
 
-  }, 1000);
+          if (Math.random() > 0.35) {
+
+            state.playerScore++;
+
+            showToast(
+              "⚡ RÉACTION PARFAITE !"
+            );
+
+          } else {
+
+            state.opponentScore++;
+
+            showToast(
+              "😭 Trop lent !"
+            );
+          }
+
+          nextChallenge();
+        };
+      }
+
+    }, 1000);
 }
+
+
+/* =========================
+   NEXT
+========================= */
 
 function nextChallenge() {
 
@@ -399,54 +572,119 @@ function nextChallenge() {
       state.currentChallenge >=
       state.currentChallenges.length
     ) {
+
       finishBattle();
+
     } else {
+
       loadChallenge();
     }
 
   }, 500);
 }
 
+
+/* =========================
+   FINISH BATTLE
+========================= */
+
 function finishBattle() {
 
   clearInterval(timerInterval);
 
   state.battles++;
-trackEvent("battle_completed", {
-  mode: state.currentMode
-});
-  let won = state.playerScore > state.opponentScore;
 
-  if (state.playerScore === state.opponentScore) {
-    won = Math.random() > .5;
+  trackEvent(
+    "battle_completed",
+    {
+      mode: state.currentMode
+    }
+  );
+
+  let won =
+    state.playerScore >
+    state.opponentScore;
+
+  if (
+    state.playerScore ===
+    state.opponentScore
+  ) {
+
+    won =
+      Math.random() > 0.5;
   }
 
-  let earned = won ? 100 : 35;
+  let earned =
+    won ? 100 : 35;
 
-  if (state.currentChallenges.length === 1) {
-    earned = won ? 50 : 20;
+  if (
+    state.currentChallenges.length === 1
+  ) {
+
+    earned =
+      won ? 50 : 20;
+  }
+
+  /* Bonus streak */
+
+  if (won && state.streak >= 7) {
+    earned += 25;
   }
 
   state.xp += earned;
 
   if (won) {
+
     state.wins++;
+
     state.streak++;
+
   } else {
+
     state.streak = 0;
   }
-trackEvent(won ? "battle_won" : "battle_lost", {
-  mode: state.currentMode
-});
+
   state.best =
-    Math.max(state.best, state.playerScore);
+    Math.max(
+      state.best,
+      state.playerScore
+    );
+
+  const opponentScore =
+    state.challengeMode &&
+    state.challengeCreatorScore !== null
+      ? state.challengeCreatorScore
+      : state.opponentScore;
 
   state.lastBattle = {
+
     won,
+
     earned,
-    playerScore: state.playerScore,
-    opponentScore: state.opponentScore
+
+    playerScore:
+      state.playerScore,
+
+    opponentScore,
+
+    mode:
+      state.currentMode,
+
+    challengeId:
+      state.challengeId,
+
+    creator:
+      state.challengeCreator
   };
+
+  trackEvent(
+    won
+      ? "battle_won"
+      : "battle_lost",
+    {
+      mode: state.currentMode
+    }
+  );
 
   save();
 
@@ -454,152 +692,136 @@ trackEvent(won ? "battle_won" : "battle_lost", {
     state.playerScore;
 
   $("finalOpponentScore").textContent =
-    state.opponentScore;
+    opponentScore;
 
   $("earnedXP").textContent =
     `+${earned} XP`;
 
   if (won) {
 
-    $("resultEmoji").textContent = "🏆";
-    $("resultTitle").textContent = "VICTOIRE !";
+    $("resultEmoji").textContent =
+      "🏆";
+
+    $("resultTitle").textContent =
+      "VICTOIRE !";
 
   } else {
 
-    $("resultEmoji").textContent = "💀";
-    $("resultTitle").textContent = "DÉFAITE !";
+    $("resultEmoji").textContent =
+      "💀";
+
+    $("resultTitle").textContent =
+      "DÉFAITE !";
   }
 
   showScreen("result");
 }
 
+
+/* =========================
+   REMATCH
+========================= */
+
 function rematch() {
 
-  startBattle(state.currentMode);
+  startBattle(
+    state.currentMode
+  );
 }
 
-async function shareResult() {
-  trackEvent("result_shared");
-  const result = state.lastBattle;
 
-  const text =
-`⚔️ BATTLE CHALLENGE
+/* =========================================================
+   VIRAL CHALLENGE SYSTEM
+========================================================= */
 
-J'ai ${result.won ? "battu mon adversaire 🏆" : "perdu 😭"} !
 
-Score : ${result.playerScore} - ${result.opponentScore}
+/* =========================
+   ENCODE
+========================= */
 
-🔥 À ton tour de me défier !`;
+function encodeChallenge(data) {
 
-  if (navigator.share) {
+  const json =
+    JSON.stringify(data);
 
-    try {
+  return btoa(
+    encodeURIComponent(json)
+  );
+}
 
-      await navigator.share({
-        title: "Battle Challenge ⚔️",
-        text: text,
-        url: window.location.href
-      });
 
-    } catch (e) {}
+/* =========================
+   DECODE
+========================= */
 
-  } else {
+function decodeChallenge(code) {
 
-    try {
+  try {
 
-      await navigator.clipboard.writeText(
-        text + "\n" + window.location.href
+    const json =
+      decodeURIComponent(
+        atob(code)
       );
 
-      showToast("📋 Résultat copié !");
+    return JSON.parse(json);
 
-    } catch (e) {
+  } catch (error) {
 
-      showToast("📤 Partage non disponible");
-    }
+    return null;
   }
 }
 
-function showProfile() {
 
-  updateUI();
-  showScreen("profile");
-}
+/* =========================
+   CREATE CHALLENGE
+========================= */
 
-function showLeaderboard() {
+function createFriendChallenge() {
 
-  const players = [
-    {
-      name: "Alex",
-      xp: 2850,
-      avatar: "🔥"
-    },
-    {
-      name: "Max",
-      xp: 2410,
-      avatar: "😈"
-    },
-    {
-      name: "Thomas",
-      xp: 2100,
-      avatar: "⚡"
-    },
-    {
-      name: "Sarah",
-      xp: 1870,
-      avatar: "👑"
-    },
-    {
-      name: "Toi",
-      xp: state.xp,
-      avatar: "😎"
-    }
-  ];
+  if (!state.lastBattle) {
 
-  players.sort((a, b) => b.xp - a.xp);
+    showToast(
+      "Joue d'abord une battle !"
+    );
 
-  $("leaderboardList").innerHTML =
-    players.map((player, index) => `
-      <div class="rank">
-        <span class="rank-number">
-          ${index === 0 ? "🥇" :
-            index === 1 ? "🥈" :
-            index === 2 ? "🥉" :
-            index + 1}
-        </span>
+    return;
+  }
 
-        <span class="rank-avatar">
-          ${player.avatar}
-        </span>
+  const result =
+    state.lastBattle;
 
-        <div class="rank-info">
-          <strong>${player.name}</strong>
-          <small>Niveau ${Math.floor(player.xp / 250) + 1}</small>
-        </div>
+  const challenge = {
 
-        <span class="rank-xp">
-          ${player.xp} XP
-        </span>
-      </div>
-    `).join("");
+    id:
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(),
 
-  $("leaderboardModal").classList.remove("hidden");
-}
+    name:
+      state.playerName,
 
-function closeLeaderboard() {
-  $("leaderboardModal").classList.add("hidden");
-}
+    score:
+      result.playerScore,
 
-function showToast(message) {
+    mode:
+      result.mode,
 
-  const toast = $("toast");
+    xp:
+      result.earned,
 
-  toast.textContent = message;
-  toast.classList.add("show");
+    streak:
+      state.streak,
 
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1800);
-}
+    created:
+      Date.now()
+  };
 
-updateUI();
+  const code =
+    encodeChallenge(challenge);
+
+  const url =
+    `${window.location.origin}${window.location.pathname}?challenge=${encodeURIComponent(code)}`;
+
+  trackEvent(
+    "challenge_created",
+   
