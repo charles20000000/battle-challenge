@@ -1,5 +1,64 @@
-*{box-sizing:border-box}
-:root{--bg:#08080d;--card:#11111a;--card2:#171722;--line:#262633;--text:#fff;--muted:#9b9baa;--purple:#7c5cff;--purple2:#a78bfa;--yellow:#ffd166}
-html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 50% -10%,#20154a 0,#08080d 38%);color:var(--text)}
-button,input{font:inherit}button{cursor:pointer;border:0;color:inherit}.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:90px}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:20;background:rgba(8,8,13,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05)}.logo{display:flex;align-items:center;gap:9px;cursor:pointer}.logo>span{font-size:27px}.logo strong{display:block;font-size:17px}.logo small{display:block;color:var(--muted);font-size:11px}.profile-btn{background:#171722;border:1px solid var(--line);border-radius:14px;padding:8px 11px;font-size:18px}.profile-btn span{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:8px;background:var(--purple);font-size:12px;font-weight:900;margin-right:4px}.screen{display:none;padding:22px 16px}.screen.active{display:block}.hero{text-align:center;padding:40px 10px 25px}.hero-icon{font-size:60px;display:block;filter:drop-shadow(0 0 28px #7c5cff66);margin-bottom:10px}.eyebrow{color:var(--purple2);font-size:11px;font-weight:900;letter-spacing:2px}.hero h1{font-size:clamp(38px,9vw,64px);line-height:.98;margin:8px 0 14px;letter-spacing:-2px}.hero p,.muted{color:var(--muted);line-height:1.55}.hero-actions{display:grid;gap:10px;max-width:470px;margin:25px auto 0}.primary-btn,.secondary-btn,.ghost-btn,.small-btn{border-radius:15px;padding:14px 18px;font-weight:900;transition:.18s transform,.18s opacity}.primary-btn{background:linear-gradient(135deg,#8b5cf6,#5b21b6);box-shadow:0 10px 30px #7c5cff26}.secondary-btn{background:#191923;border:1px solid var(--line)}.ghost-btn{background:transparent;color:var(--muted)}.small-btn{padding:8px 11px;background:#191923;border:1px solid var(--line);font-size:12px}.primary-btn:hover,.secondary-btn:hover{transform:translateY(-2px)}.big{font-size:15px}.daily-card,.page-card,.result-card,.challenge-card{background:linear-gradient(145deg,#151520,#0f0f17);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 20px 50px #0004}.daily-card{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:10px 0 24px}.daily-card h2{margin:7px 0 4px}.daily-card p{margin:0;color:var(--muted);font-size:13px}.daily-card button{background:var(--yellow);color:#16120a;border-radius:12px;padding:11px 15px;font-weight:900;white-space:nowrap}.tag,.challenge-tag{font-size:10px;font-weight:900;letter-spacing:1.2px;color:var(--purple2)}.section-title{margin:25px 3px 12px}.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mode-grid.compact{margin-top:20px}.mode-card{min-height:125px;border-radius:20px;text-align:left;padding:18px;background:#14141d;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:4px}.mode-card span{font-size:28px}.mode-card strong{font-size:15px}.mode-card small{color:var(--muted)}.mode-card.fun{box-shadow:inset 0 0 40px #ec48991a}.mode-card.quiz{box-shadow:inset 0 0 40px #3b82f61a}.mode-card.speed{box-shadow:inset 0 0 40px #f59e0b1a}.mode-card.chaos{box-shadow:inset 0 0 40px #ef44441a}.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.stats-row div{background:#11111a;border:1px solid var(--line);border-radius:17px;padding:14px;text-align:center}.stats-row strong,.stats-row span{display:block}.stats-row strong{font-size:23px}.stats-row span{font-size:10px;color:var(--muted);margin-top:3px}.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.feature-card{display:flex;align-items:center;gap:12px;padding:15px;border-radius:17px;background:#11111a;border:1px solid var(--line);text-align:left}.feature-card>span{font-size:25px}.feature-card b,.feature-card small{display:block}.feature-card small{color:var(--muted);margin-top:3px}.battle-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}.battle-header>div{flex:1}.battle-header span,.battle-header strong{display:block}.battle-header span{font-size:10px;color:var(--purple2);font-weight:900}.battle-header strong{font-size:15px}.back-btn{background:#15151f;border:1px solid var(--line);border-radius:12px;width:42px;height:42px;font-size:21px}.xp-pill{background:#201849;color:#c4b5fd;border-radius:10px;padding:7px 9px!important;font-size:10px!important}.players{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;margin:12px 0 22px}.avatar{width:58px;height:58px;border-radius:50%;background:#211a45;display:grid;place-items:center;margin:auto;font-size:28px}.enemy{background:#35151c}.player strong,.player>span{display:block}.player strong{font-size:11px;margin-top:7px}.player>span{font-size:27px;font-weight:900;margin-top:2px}.versus{font-weight:1000;color:#6e6e7e}.challenge-card{text-align:center;padding:35px 20px}.challenge-card h1{font-size:30px;margin:13px 0 8px}.challenge-card p{color:var(--muted);line-height:1.55;min-height:48px}.challenge-card .primary-btn{width:100%;margin-top:14px}.timer{font-size:48px;font-weight:1000;margin:14px}.hidden{display:none!important}.progress{height:7px;background:#191923;border-radius:99px;overflow:hidden;margin:18px 2px}.progress div{height:100%;width:0;background:linear-gradient(90deg,#7c5cff,#c084fc);transition:.3s}.incoming-banner{padding:12px 15px;border-radius:14px;background:#211849;color:#d8ccff;text-align:center;font-weight:800;margin-bottom:15px}.result-card{text-align:center;margin-top:15px}.result-emoji{font-size:65px;display:block}.result-card h1{font-size:38px;margin:5px 0}.score-final{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:25px 0}.score-final span,.result-highlight span{display:block;font-size:10px;color:var(--muted);font-weight:800}.score-final strong{display:block;font-size:46px}.score-final b{color:#555}.result-highlight{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.result-highlight>div{background:#101018;border:1px solid var(--line);border-radius:14px;padding:12px}.result-highlight strong{display:block;margin-top:5px}.result-actions{display:grid;gap:9px;margin-top:20px}.profile-card{text-align:center}.big-avatar{font-size:70px}.profile-card h1{margin:8px 0}.level{display:flex;justify-content:space-between;margin-top:22px;font-size:12px}.xp-bar{height:10px;background:#20202b;border-radius:99px;overflow:hidden;margin-top:10px}.xp-bar div{height:100%;width:0;background:linear-gradient(90deg,#7c5cff,#c084fc);transition:.3s}.achievement-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.achievement{background:#11111a;border:1px solid var(--line);border-radius:15px;padding:12px 5px;text-align:center}.achievement span,.achievement strong,.achievement small{display:block}.achievement span{font-size:21px}.achievement strong{font-size:18px;margin:3px 0}.achievement small{font-size:9px;color:var(--muted)}.badges-list{display:flex;flex-wrap:wrap;gap:8px}.badge{background:#201849;color:#ddd3ff;border:1px solid #49388b;border-radius:999px;padding:8px 10px;font-size:11px;font-weight:800}.badge-result{margin:15px 0;padding:12px;border-radius:14px;background:#201849;color:#ddd3ff}.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:76px;background:rgba(10,10,15,.92);backdrop-filter:blur(20px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:30;padding-bottom:env(safe-area-inset-bottom)}.nav-btn{background:transparent;color:#777784;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.nav-btn span{font-size:20px}.nav-btn small{font-size:10px}.nav-btn.active,.nav-btn:hover{color:#fff}.modal{position:fixed;inset:0;background:#000a;z-index:50;display:grid;place-items:end center;padding:15px}.modal-box{width:min(600px,100%);max-height:90vh;overflow:auto;background:#11111a;border:1px solid var(--line);border-radius:25px;padding:23px;position:relative}.close-btn{position:absolute;right:15px;top:12px;background:#20202b;border-radius:10px;width:35px;height:35px;font-size:22px}.leader-row{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #22222d}.rank{font-weight:1000}.leader-name{font-weight:800}.leader-xp{color:var(--muted);font-size:12px}.share-input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#08080d;color:#fff;margin:10px 0;outline:none}.full{width:100%;margin-top:8px}.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:#fff;color:#111;padding:12px 16px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;z-index:100;transition:.25s;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}@media(max-width:520px){.screen{padding:18px 12px}.hero{padding-top:28px}.hero h1{font-size:42px}.achievement-grid{grid-template-columns:1fr 1fr}.daily-card{align-items:flex-start}.daily-card button{align-self:center}.feature-grid{grid-template-columns:1fr}.mode-card{min-height:110px}}
-
+2026-08-20T04:35:21.801Z	Initializing build environment...
+2026-08-20T04:35:23.667Z	Success: Finished initializing build environment
+2026-08-20T04:35:24.835Z	Cloning repository...
+2026-08-20T04:35:26.816Z	No build output detected to cache. Skipping.
+2026-08-20T04:35:26.816Z	No dependencies detected to cache. Skipping.
+2026-08-20T04:35:26.817Z	Detected the following tools from environment: 
+2026-08-20T04:35:26.949Z	Executing user deploy command: npx wrangler deploy
+2026-08-20T04:35:29.358Z	npm warn exec The following package was not found and will be installed: wrangler@4.124.0
+2026-08-20T04:35:39.691Z	
+2026-08-20T04:35:39.691Z	 ⛅️ wrangler 4.124.0
+2026-08-20T04:35:39.691Z	────────────────────
+2026-08-20T04:35:39.908Z	
+2026-08-20T04:35:39.909Z	Detected Project Settings:
+2026-08-20T04:35:39.913Z	 - Worker Name: battle-challenge
+2026-08-20T04:35:39.913Z	 - Framework: Static
+2026-08-20T04:35:39.913Z	 - Output Directory: .
+2026-08-20T04:35:39.913Z	
+2026-08-20T04:35:39.914Z	? Do you want to modify these settings?
+2026-08-20T04:35:39.914Z	🤖 Using fallback value in non-interactive context: no
+2026-08-20T04:35:39.928Z	
+2026-08-20T04:35:39.928Z	📄 Create wrangler.jsonc:
+2026-08-20T04:35:39.929Z	  {
+2026-08-20T04:35:39.930Z	    "$schema": "node_modules/wrangler/config-schema.json",
+2026-08-20T04:35:39.930Z	    "name": "battle-challenge",
+2026-08-20T04:35:39.930Z	    "compatibility_date": "2026-08-15",
+2026-08-20T04:35:39.930Z	    "observability": {
+2026-08-20T04:35:39.931Z	      "enabled": true
+2026-08-20T04:35:39.932Z	    },
+2026-08-20T04:35:39.933Z	    "assets": {
+2026-08-20T04:35:39.933Z	      "directory": "."
+2026-08-20T04:35:39.935Z	    }
+2026-08-20T04:35:39.935Z	  }
+2026-08-20T04:35:39.937Z	
+2026-08-20T04:35:39.937Z	? Proceed with setup?
+2026-08-20T04:35:39.938Z	🤖 Using fallback value in non-interactive context: yes
+2026-08-20T04:35:40.200Z	├ Adding Wrangler files to the .gitignore file
+2026-08-20T04:35:40.201Z	│ created .gitignore file
+2026-08-20T04:35:40.201Z	│
+2026-08-20T04:35:40.651Z	🌀 Building list of assets...
+2026-08-20T04:35:40.656Z	✨ Read 61 files from the assets directory /opt/buildhome/repo
+2026-08-20T04:35:40.671Z	🌀 Starting asset upload...
+2026-08-20T04:35:41.913Z	🌀 Found 8 new or modified static assets to upload. Proceeding with upload...
+2026-08-20T04:35:41.913Z	+ /.git/HEAD
+2026-08-20T04:35:41.913Z	+ /.git/logs/refs/remotes/origin/main
+2026-08-20T04:35:41.914Z	+ /.git/config
+2026-08-20T04:35:41.914Z	+ /.git/FETCH_HEAD
+2026-08-20T04:35:41.914Z	+ /.git/logs/refs/heads/main
+2026-08-20T04:35:41.914Z	+ /.wrangler/tmp/deploy-gEOMmG/no-op-worker.js.map
+2026-08-20T04:35:41.914Z	+ /.git/logs/HEAD
+2026-08-20T04:35:41.914Z	+ /.git/index
+2026-08-20T04:35:42.835Z	Uploaded 2 of 8 assets
+2026-08-20T04:35:42.836Z	Uploaded 5 of 8 assets
+2026-08-20T04:35:42.838Z	Uploaded 8 of 8 assets
+2026-08-20T04:35:42.838Z	✨ Success! Uploaded 8 files (28 already uploaded) (0.93 sec)
+2026-08-20T04:35:42.838Z	
+2026-08-20T04:35:42.841Z	Total Upload: 0.33 KiB / gzip: 0.24 KiB
+2026-08-20T04:35:43.698Z	Uploaded battle-challenge (3.17 sec)
+2026-08-20T04:35:44.042Z	Deployed battle-challenge triggers (0.34 sec)
+2026-08-20T04:35:44.042Z	  https://battle-challenge.savardc26.workers.dev
+2026-08-20T04:35:44.042Z	Current Version ID: 2cdfe11c-9510-4483-9d94-bbb0b3c6f463
+2026-08-20T04:35:44.050Z	
+2026-08-20T04:35:44.050Z	Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+2026-08-20T04:35:44.229Z	Success: Deploy command completed
+2026-08-20T04:35:44.327Z	✨ Success! Build completed.
