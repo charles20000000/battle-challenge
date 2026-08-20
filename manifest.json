@@ -1,12 +1,64 @@
-{
-  "name":"Battle Challenge",
-  "short_name":"Battle",
-  "description":"Défie tes amis, gagne des XP et domine le classement.",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#08080d",
-  "theme_color":"#7c5cff",
-  "orientation":"portrait",
-  "lang":"fr",
-  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
-}
+2026-08-20T04:35:21.801Z	Initializing build environment...
+2026-08-20T04:35:23.667Z	Success: Finished initializing build environment
+2026-08-20T04:35:24.835Z	Cloning repository...
+2026-08-20T04:35:26.816Z	No build output detected to cache. Skipping.
+2026-08-20T04:35:26.816Z	No dependencies detected to cache. Skipping.
+2026-08-20T04:35:26.817Z	Detected the following tools from environment: 
+2026-08-20T04:35:26.949Z	Executing user deploy command: npx wrangler deploy
+2026-08-20T04:35:29.358Z	npm warn exec The following package was not found and will be installed: wrangler@4.124.0
+2026-08-20T04:35:39.691Z	
+2026-08-20T04:35:39.691Z	 ⛅️ wrangler 4.124.0
+2026-08-20T04:35:39.691Z	────────────────────
+2026-08-20T04:35:39.908Z	
+2026-08-20T04:35:39.909Z	Detected Project Settings:
+2026-08-20T04:35:39.913Z	 - Worker Name: battle-challenge
+2026-08-20T04:35:39.913Z	 - Framework: Static
+2026-08-20T04:35:39.913Z	 - Output Directory: .
+2026-08-20T04:35:39.913Z	
+2026-08-20T04:35:39.914Z	? Do you want to modify these settings?
+2026-08-20T04:35:39.914Z	🤖 Using fallback value in non-interactive context: no
+2026-08-20T04:35:39.928Z	
+2026-08-20T04:35:39.928Z	📄 Create wrangler.jsonc:
+2026-08-20T04:35:39.929Z	  {
+2026-08-20T04:35:39.930Z	    "$schema": "node_modules/wrangler/config-schema.json",
+2026-08-20T04:35:39.930Z	    "name": "battle-challenge",
+2026-08-20T04:35:39.930Z	    "compatibility_date": "2026-08-15",
+2026-08-20T04:35:39.930Z	    "observability": {
+2026-08-20T04:35:39.931Z	      "enabled": true
+2026-08-20T04:35:39.932Z	    },
+2026-08-20T04:35:39.933Z	    "assets": {
+2026-08-20T04:35:39.933Z	      "directory": "."
+2026-08-20T04:35:39.935Z	    }
+2026-08-20T04:35:39.935Z	  }
+2026-08-20T04:35:39.937Z	
+2026-08-20T04:35:39.937Z	? Proceed with setup?
+2026-08-20T04:35:39.938Z	🤖 Using fallback value in non-interactive context: yes
+2026-08-20T04:35:40.200Z	├ Adding Wrangler files to the .gitignore file
+2026-08-20T04:35:40.201Z	│ created .gitignore file
+2026-08-20T04:35:40.201Z	│
+2026-08-20T04:35:40.651Z	🌀 Building list of assets...
+2026-08-20T04:35:40.656Z	✨ Read 61 files from the assets directory /opt/buildhome/repo
+2026-08-20T04:35:40.671Z	🌀 Starting asset upload...
+2026-08-20T04:35:41.913Z	🌀 Found 8 new or modified static assets to upload. Proceeding with upload...
+2026-08-20T04:35:41.913Z	+ /.git/HEAD
+2026-08-20T04:35:41.913Z	+ /.git/logs/refs/remotes/origin/main
+2026-08-20T04:35:41.914Z	+ /.git/config
+2026-08-20T04:35:41.914Z	+ /.git/FETCH_HEAD
+2026-08-20T04:35:41.914Z	+ /.git/logs/refs/heads/main
+2026-08-20T04:35:41.914Z	+ /.wrangler/tmp/deploy-gEOMmG/no-op-worker.js.map
+2026-08-20T04:35:41.914Z	+ /.git/logs/HEAD
+2026-08-20T04:35:41.914Z	+ /.git/index
+2026-08-20T04:35:42.835Z	Uploaded 2 of 8 assets
+2026-08-20T04:35:42.836Z	Uploaded 5 of 8 assets
+2026-08-20T04:35:42.838Z	Uploaded 8 of 8 assets
+2026-08-20T04:35:42.838Z	✨ Success! Uploaded 8 files (28 already uploaded) (0.93 sec)
+2026-08-20T04:35:42.838Z	
+2026-08-20T04:35:42.841Z	Total Upload: 0.33 KiB / gzip: 0.24 KiB
+2026-08-20T04:35:43.698Z	Uploaded battle-challenge (3.17 sec)
+2026-08-20T04:35:44.042Z	Deployed battle-challenge triggers (0.34 sec)
+2026-08-20T04:35:44.042Z	  https://battle-challenge.savardc26.workers.dev
+2026-08-20T04:35:44.042Z	Current Version ID: 2cdfe11c-9510-4483-9d94-bbb0b3c6f463
+2026-08-20T04:35:44.050Z	
+2026-08-20T04:35:44.050Z	Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+2026-08-20T04:35:44.229Z	Success: Deploy command completed
+2026-08-20T04:35:44.327Z	✨ Success! Build completed.
