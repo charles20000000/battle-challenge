@@ -237,6 +237,7 @@ function updateDaily() {
 function startDaily() {
 
   state.currentMode = "chaos";
+  trackEvent("daily_challenge_started");
   state.currentChallenges = [
     {
       title: dailyChallenges[Math.floor(Date.now() / 86400000) % dailyChallenges.length].title,
@@ -261,7 +262,9 @@ function startBattle(mode) {
   }
 
   state.currentMode = mode;
-
+trackEvent("battle_started", {
+  mode: mode
+});
   state.currentChallenges = [...challenges[mode]]
     .sort(() => Math.random() - .5)
     .slice(0, 5);
@@ -409,7 +412,9 @@ function finishBattle() {
   clearInterval(timerInterval);
 
   state.battles++;
-
+trackEvent("battle_completed", {
+  mode: state.currentMode
+});
   let won = state.playerScore > state.opponentScore;
 
   if (state.playerScore === state.opponentScore) {
@@ -430,7 +435,9 @@ function finishBattle() {
   } else {
     state.streak = 0;
   }
-
+trackEvent(won ? "battle_won" : "battle_lost", {
+  mode: state.currentMode
+});
   state.best =
     Math.max(state.best, state.playerScore);
 
@@ -472,7 +479,7 @@ function rematch() {
 }
 
 async function shareResult() {
-
+  trackEvent("result_shared");
   const result = state.lastBattle;
 
   const text =
