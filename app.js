@@ -159,7 +159,15 @@ let state = {
 let timerInterval = null;
 
 const $ = id => document.getElementById(id);
+// ================================
+// ANALYTICS BATTLE CHALLENGE
+// ================================
 
+function trackEvent(name, params = {}) {
+  if (typeof gtag === "function") {
+    gtag("event", name, params);
+  }
+}
 function save() {
   localStorage.setItem("bc_xp", state.xp);
   localStorage.setItem("bc_wins", state.wins);
