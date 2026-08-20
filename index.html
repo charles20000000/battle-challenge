@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#09090f">
+<meta name="description" content="Battle Challenge V2 — défie tes amis, gagne des XP et domine le classement.">
+<title>Battle Challenge ⚔️</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
 
+<header class="topbar">
+  <div class="logo" onclick="goHome()">
+    <span>⚔️</span>
+    <div><strong>Battle</strong><small>Challenge</small></div>
+  </div>
+  <button class="profile-btn" onclick="showProfile()"><span id="levelBadge">1</span> 👤</button>
+</header>
+
+<main>
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <span class="hero-icon">⚔️</span>
+    <p class="eyebrow">BATTLE CHALLENGE V2</p>
+    <h1>Qui peut te battre ?</h1>
+    <p>Défie tes amis. Gagne des XP. Monte de niveau. Domine le classement.</p>
+    <div class="hero-actions">
+      <button class="primary-btn big" onclick="startBattle()">⚔️ LANCER UN BATTLE</button>
+      <button class="secondary-btn big" onclick="openChallengeCreator()">👥 DÉFIER UN AMI</button>
+    </div>
+  </div>
+
+  <div class="daily-card">
+    <div><span class="tag">🔥 BATTLE DU JOUR</span><h2 id="dailyTitle">Défi surprise</h2><p id="dailyDescription"></p></div>
+    <button onclick="startDaily()">JOUER</button>
+  </div>
+
+  <div class="stats-row">
+    <div><strong id="homeXP">0</strong><span>XP</span></div>
+    <div><strong id="homeWins">0</strong><span>Victoires</span></div>
+    <div><strong id="homeStreak">0</strong><span>🔥 Streak</span></div>
+  </div>
+
+  <h3 class="section-title">Choisis ton mode</h3>
+  <div class="mode-grid">
+    <button class="mode-card fun" onclick="startBattle('fun')"><span>😂</span><strong>FUN</strong><small>Fous rires</small></button>
+    <button class="mode-card quiz" onclick="startBattle('quiz')"><span>🧠</span><strong>QUIZ</strong><small>Teste ton cerveau</small></button>
+    <button class="mode-card speed" onclick="startBattle('speed')"><span>⚡</span><strong>RAPIDE</strong><small>Réagis vite</small></button>
+    <button class="mode-card chaos" onclick="startBattle('chaos')"><span>💀</span><strong>CHAOS</strong><small>Aucune règle</small></button>
+  </div>
+
+  <div class="feature-grid">
+    <button class="feature-card" onclick="showLeaderboard()"><span>🏆</span><div><b>Classement</b><small>Monte les rangs</small></div></button>
+    <button class="feature-card" onclick="showProfile()"><span>⭐</span><div><b>Ta progression</b><small>Niveau & badges</small></div></button>
+  </div>
+</section>
+
+<section id="battle" class="screen">
+  <div class="battle-header">
+    <button class="back-btn" onclick="goHome()">←</button>
+    <div><span id="battleMode">BATTLE</span><strong id="challengeNumber">Défi 1/5</strong></div>
+    <span class="xp-pill">XP</span>
+  </div>
+
+  <div id="incomingBanner" class="incoming-banner hidden"></div>
+
+  <div class="players">
+    <div class="player"><div class="avatar">😎</div><strong>TOI</strong><span id="playerScore">0</span></div>
+    <div class="versus">VS</div>
+    <div class="player"><div class="avatar enemy">🔥</div><strong id="opponentName">ADVERSAIRE</strong><span id="opponentScore">0</span></div>
+  </div>
+
+  <div class="challenge-card">
+    <span class="challenge-tag" id="challengeCategory">DÉFI</span>
+    <h1 id="challengeTitle">Prêt ?</h1>
+    <p id="challengeText">Appuie sur commencer pour recevoir ton défi.</p>
+    <div id="timer" class="timer hidden">3</div>
+    <button id="challengeButton" class="primary-btn" onclick="doChallenge()">COMMENCER</button>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+</section>
+
+<section id="result" class="screen">
+  <div class="result-card">
+    <span class="result-emoji" id="resultEmoji">🏆</span>
+    <p class="tag">BATTLE TERMINÉ</p>
+    <h1 id="resultTitle">VICTOIRE !</h1>
+    <p id="resultSubtitle" class="muted"></p>
+
+    <div class="score-final">
+      <div><span>TOI</span><strong id="finalPlayerScore">0</strong></div>
+      <b>-</b>
+      <div><span>ADVERSAIRE</span><strong id="finalOpponentScore">0</strong></div>
+    </div>
+
+    <div class="result-highlight">
+      <div><span>✨ XP GAGNÉS</span><strong id="earnedXP">+100 XP</strong></div>
+      <div><span>🏆 NIVEAU</span><strong id="resultLevel">1</strong></div>
+      <div><span>🔥 STREAK</span><strong id="resultStreak">0</strong></div>
+    </div>
+
+    <div id="badgeResult" class="badge-result hidden"></div>
+
+    <div class="result-actions">
+      <button class="primary-btn" onclick="rematch()">🔄 REVANCHE</button>
+      <button class="secondary-btn" onclick="shareResult()">📤 PARTAGER</button>
+      <button class="secondary-btn" onclick="createFriendChallenge()">⚔️ DÉFIER UN AMI</button>
+      <button class="ghost-btn" onclick="goHome()">ACCUEIL</button>
+    </div>
+  </div>
+</section>
+
+<section id="challengeCreator" class="screen">
+  <button class="back-btn" onclick="goHome()">← Retour</button>
+  <div class="page-card">
+    <p class="eyebrow">⚔️ DÉFI PERSONNEL</p>
+    <h1>Défie quelqu'un.</h1>
+    <p class="muted">Choisis un mode. Après ta partie, tu recevras un lien que ton ami pourra ouvrir.</p>
+    <div class="mode-grid compact">
+      <button class="mode-card fun" onclick="createChallengeAndPlay('fun')"><span>😂</span><strong>FUN</strong></button>
+      <button class="mode-card quiz" onclick="createChallengeAndPlay('quiz')"><span>🧠</span><strong>QUIZ</strong></button>
+      <button class="mode-card speed" onclick="createChallengeAndPlay('speed')"><span>⚡</span><strong>RAPIDE</strong></button>
+      <button class="mode-card chaos" onclick="createChallengeAndPlay('chaos')"><span>💀</span><strong>CHAOS</strong></button>
+    </div>
+  </div>
+</section>
+
+<section id="profile" class="screen">
+  <button class="back-btn" onclick="goHome()">← Retour</button>
+  <div class="profile-card">
+    <div class="big-avatar">😎</div>
+    <h1 id="profileName">Challenger</h1>
+    <button class="small-btn" onclick="changeName()">✏️ Modifier le nom</button>
+    <div class="level"><span>NIVEAU <b id="profileLevel">1</b></span><strong id="profileXP">0 XP</strong></div>
+    <div class="xp-bar"><div id="profileXPBar"></div></div>
+    <p id="levelText">Encore un peu d'XP.</p>
+  </div>
+
+  <div class="achievement-grid">
+    <div class="achievement"><span>🏆</span><strong id="profileWins">0</strong><small>Victoires</small></div>
+    <div class="achievement"><span>🔥</span><strong id="profileStreak">0</strong><small>Streak</small></div>
+    <div class="achievement"><span>⚔️</span><strong id="profileBattles">0</strong><small>Battles</small></div>
+    <div class="achievement"><span>⭐</span><strong id="profileBest">0</strong><small>Meilleur score</small></div>
+  </div>
+
+  <div class="page-card">
+    <p class="eyebrow">🏅 BADGES</p>
+    <div id="badgesList" class="badges-list"></div>
+  </div>
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goHome()"><span>🏠</span><small>Accueil</small></button>
+  <button class="nav-btn" onclick="startBattle()"><span>⚔️</span><small>Battle</small></button>
+  <button class="nav-btn" onclick="showLeaderboard()"><span>🏆</span><small>Classement</small></button>
+  <button class="nav-btn" onclick="showProfile()"><span>👤</span><small>Profil</small></button>
+</nav>
+</div>
+
+<div id="leaderboardModal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeLeaderboard()">×</button>
+    <span class="tag">🏆 CLASSEMENT LOCAL</span>
+    <h2>Qui domine ?</h2>
+    <p class="muted">Le classement mondial nécessitera une base de données. Cette V2 garde un classement local fonctionnel.</p>
+    <div id="leaderboardList"></div>
+  </div>
+</div>
+
+<div id="shareModal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeShare()">×</button>
+    <span class="tag">📤 PARTAGE</span>
+    <h2>Défie quelqu'un</h2>
+    <p id="shareText" class="muted"></p>
+    <input id="shareLink" class="share-input" readonly>
+    <button class="primary-btn full" onclick="copyChallengeLink()">🔗 COPIER LE LIEN</button>
+    <button class="secondary-btn full" onclick="nativeShare()">📱 PARTAGER</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
